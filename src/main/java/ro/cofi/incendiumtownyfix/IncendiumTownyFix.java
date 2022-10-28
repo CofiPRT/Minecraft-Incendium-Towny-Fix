@@ -6,12 +6,8 @@ public final class IncendiumTownyFix extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
+        // register listeners
+        getServer().getPluginManager().registerEvents(new EntityHurtListener(this), this);
     }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
+    
 }

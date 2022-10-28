@@ -4,3 +4,4 @@ main: ro.cofi.incendiumtownyfix.IncendiumTownyFix
 api-version: 1.19
 authors: [ Deathcofi ]
 description: A PaperMC plugin to prevent Incendium tools from bypassing Towny perms.
+depend: [ Towny ]

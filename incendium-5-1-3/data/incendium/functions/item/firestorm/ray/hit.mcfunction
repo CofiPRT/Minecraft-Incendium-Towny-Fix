@@ -4,5 +4,8 @@ tag @s add laser
 #execute rotated as @s positioned ~0.5 ~1 ~0.5 run 
 #execute as @e[distance=..4,limit=1] at @s facing entity @e[type=blaze,tag=sentry,tag=attacking,sort=nearest,limit=1,distance=..50] eyes run 
 summon minecraft:firework_rocket ~ ~1 ~ {Silent:1b,Motion:[0.0,0.0,0.0],ShotAtAngle:1,LifeTime:0,FireworksItem:{id:"firework_rocket",Count:1,tag:{Fireworks:{Flight:1,Explosions:[{Type:4,Flicker:0,Trail:0,Colors:[I;16725028]},{Type:4,Flicker:0,Trail:0,Colors:[I;16725028]},{Type:4,Flicker:0,Trail:0,Colors:[I;16725028]},{Type:4,Flicker:0,Trail:0,Colors:[I;16725028]},{Type:4,Flicker:0,Trail:0,Colors:[I;16725028]},{Type:4,Flicker:0,Trail:0,Colors:[I;16725028]},{Type:4,Flicker:0,Trail:0,Colors:[I;16725028]},{Type:4,Flicker:0,Trail:0,Colors:[I;16725028]},{Type:4,Flicker:0,Trail:0,Colors:[I;16725028]},{Type:4,Flicker:0,Trail:0,Colors:[I;16725028]}]}}},Tags:["in.firestorm_firework"]}
+
+execute as @e[type=firework_rocket,tag=in.firestorm_firework,tag=!in.checked,distance=..20] run function incendium:misc/firework
+
 execute if predicate incendium:random/50 run data merge entity @s[nbt={Fire:-20s}] {Fire:80s}
 #effect give @s instant_damage

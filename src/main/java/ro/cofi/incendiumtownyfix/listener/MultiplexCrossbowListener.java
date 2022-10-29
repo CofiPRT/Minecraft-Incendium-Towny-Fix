@@ -20,7 +20,7 @@ public class MultiplexCrossbowListener extends AbstractListener {
         if (!arrow.getScoreboardTags().contains("in.multiplex"))
             return;
 
-        // fix this fireball's shooter if necessary, so that other plugins may properly identify it
+        // fix this arrow's shooter if necessary, so that other plugins may properly identify it
         ProjectileUtils.getOrFixShooter(plugin, arrow);
     }
 }

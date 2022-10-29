@@ -17,7 +17,7 @@ public class ProjectileUtils {
      * @return the owner of the projectile if they exist, null otherwise
      */
     @SuppressWarnings("squid:S3011") // we need reflection
-    public static Player getOrFixShooter(IncendiumTownyFix plugin, Projectile projectile) {
+    public static Player getOrFixShooter(Projectile projectile) {
         Player shooter = (Player) projectile.getShooter();
         if (shooter != null)
             return shooter;
@@ -77,7 +77,7 @@ public class ProjectileUtils {
             return null;
 
         // get the owner's name
-        Player owner = plugin.getServer().getPlayer(ownerUUID);
+        Player owner = IncendiumTownyFix.getPlugin().getServer().getPlayer(ownerUUID);
 
         // set the shooter to be used by other plugins
         projectile.setShooter(owner);

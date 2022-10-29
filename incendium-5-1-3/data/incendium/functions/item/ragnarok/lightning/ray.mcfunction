@@ -4,6 +4,8 @@ scoreboard players add #distance in.fire_laser 1
 
 execute positioned ^ ^ ^0.2 unless block ~ ~ ~ #incendium:airs run summon minecraft:firework_rocket ~ ~1 ~ {Silent:1b,Motion:[0.0,-0.25,0.0],ShotAtAngle:1,LifeTime:0,FireworksItem:{id:"firework_rocket",Count:1,tag:{Fireworks:{Flight:1,Explosions:[{Type:4,Flicker:0,Trail:0,Colors:[I;10483711]},{Type:4,Flicker:0,Trail:0,Colors:[I;10476799]},{Type:4,Flicker:0,Trail:0,Colors:[I;10994687]},{Type:4,Flicker:0,Trail:0,Colors:[I;10991615]},{Type:4,Flicker:0,Trail:0,Colors:[I;9603583]}]}}},Tags:["in.ragnarok_firework"]}
 
+execute as @e[type=firework_rocket,tag=in.ragnarok_firework,tag=!in.checked,distance=..20] run function incendium:misc/firework
+
 execute positioned ^ ^ ^0.2 unless block ~ ~ ~ #incendium:airs if predicate incendium:random/other/x if predicate incendium:random/50 run summon lightning_bolt
 
 execute if predicate incendium:random/70 run particle minecraft:end_rod ~ ~ ~ 0.01 0.01 0.01 0.0 1 force

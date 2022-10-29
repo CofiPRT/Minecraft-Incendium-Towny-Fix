@@ -34,7 +34,7 @@ public class HolyWrathListener extends AbstractListener {
             return;
 
         // if no shooter could be found or set, we can't do anything
-        Player shooter = ProjectileUtils.getOrFixShooter(plugin, firework);
+        Player shooter = ProjectileUtils.getOrFixShooter(firework);
         if (shooter == null)
             return;
 
@@ -92,6 +92,6 @@ public class HolyWrathListener extends AbstractListener {
             return;
 
         // fix this fireball's shooter if necessary, so that other plugins may properly identify it
-        ProjectileUtils.getOrFixShooter(plugin, fireball);
+        ProjectileUtils.getOrFixShooter(fireball);
     }
 }

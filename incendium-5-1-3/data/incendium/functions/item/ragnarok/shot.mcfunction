@@ -3,6 +3,8 @@
 
 tag @s add in.self
 
+function incendium:misc/store_uuid
+
 scoreboard players operation $ragnarok in.dummy = @s in.ragnarok
 scoreboard players operation $ragnarok in.dummy *= #2 in.constants
 scoreboard players operation $ragnarok in.dummy /= #3 in.constants

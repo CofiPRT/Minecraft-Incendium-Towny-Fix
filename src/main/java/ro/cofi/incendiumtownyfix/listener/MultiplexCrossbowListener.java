@@ -21,6 +21,6 @@ public class MultiplexCrossbowListener extends AbstractListener {
             return;
 
         // fix this arrow's shooter if necessary, so that other plugins may properly identify it
-        ProjectileUtils.getOrFixShooter(plugin, arrow);
+        ProjectileUtils.getOrFixShooter(arrow);
     }
 }

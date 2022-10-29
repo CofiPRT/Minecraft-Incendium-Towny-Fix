@@ -31,7 +31,7 @@ public class SentrysWrathListener extends AbstractListener {
             return;
 
         // if no shooter could be found or set, we can't do anything
-        Player shooter = ProjectileUtils.getOrFixShooter(plugin, firework);
+        Player shooter = ProjectileUtils.getOrFixShooter(firework);
         if (shooter == null)
             return;
 

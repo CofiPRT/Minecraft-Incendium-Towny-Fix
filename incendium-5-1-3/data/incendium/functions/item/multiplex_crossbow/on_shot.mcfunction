@@ -3,6 +3,8 @@
 scoreboard players set $loop in.dummy 11
 execute as @e[type=#arrows,tag=!in.checked,distance=..5] positioned as @s run function incendium:item/multiplex_crossbow/arrow/spawn
 
+function incendium:misc/store_uuid
+
 tp @s ~ ~ ~ ~ ~-5
 playsound minecraft:entity.generic.explode player @s ~ ~ ~ 2 2
 playsound minecraft:entity.generic.explode player @a[distance=..16] ~ ~ ~ 2 2

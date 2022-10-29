@@ -13,6 +13,8 @@ execute store result entity @s Motion[2] double 0.001 run data get storage incen
 data modify entity @s Rotation set from storage incendium:temp aim.rotation
 data modify entity @s Air set value 1s
 
+data modify entity @s Owner set from storage incendium:temp player.UUID
+
 tag @s add in.checked
 tag @s add in.ticking_entity
 tag @s add in.air_toggle

@@ -30,7 +30,7 @@ execute positioned ~ ~0.1 ~ rotated 135 0 run function incendium:item/sentrys_wr
 execute positioned ~ ~0.1 ~ rotated 180 0 run function incendium:item/sentrys_wrath/short_lightning/start_ray
 execute positioned ~ ~0.1 ~ rotated 225 0 run function incendium:item/sentrys_wrath/short_lightning/start_ray
 
-effect give @e[type=#incendium:mobs,distance=..4.5] instant_damage 1 2
+# effect give @e[type=#incendium:mobs,distance=..4.5] instant_damage 1 2
 
 playsound minecraft:block.respawn_anchor.deplete player @a[distance=..40] ~ ~ ~ 1.0 2.0 0.8
 playsound minecraft:entity.wither.break_block player @a[distance=..40] ~ ~ ~ 1 0.85 0.7

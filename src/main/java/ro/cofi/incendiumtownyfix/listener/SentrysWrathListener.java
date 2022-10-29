@@ -25,17 +25,52 @@ public class SentrysWrathListener extends AbstractListener {
         super(plugin);
     }
 
-    @SuppressWarnings("squid:S3011") // we need reflection
+    @SuppressWarnings("squid:S1874") // no other choice other than the deprecated method
     @EventHandler(ignoreCancelled = true)
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        // Incendium Sentry's Wrath Firework - look for a firework damager
-        if (!(event.getDamager() instanceof Firework firework))
+    public void onFireworkExplosion(FireworkExplodeEvent event) {
+        if (!(event.getEntity().getScoreboardTags().contains("in.sentrys_wrath_firework")))
             return;
 
-        // if the firework's owner already exists, we're good
-        if (firework.getShooter() != null)
+        // gather entities hit by the firework explosion
+        List<LivingEntity> hitEntities = event.getEntity()
+            .getNearbyEntities(EXPLOSION_RANGE, EXPLOSION_RANGE, EXPLOSION_RANGE)
+            .stream()
+            .filter(LivingEntity.class::isInstance)
+            .map(LivingEntity.class::cast)
+            .toList();
+
+        int damage = (HARMING_LEVEL + 1) * 6; // potion of harming
+        Player shooter = (Player) event.getEntity().getShooter();
+        if (shooter == null)
+            setAttacker(event.getEntity());
+
+        // if the shooter is still null, we can't do anything
+        shooter = (Player) event.getEntity().getShooter();
+        if (shooter == null)
             return;
 
+        // if this is a big explosion, apply harm potion damage to nearby entities
+        if (!(event.getEntity().getScoreboardTags().contains("in.sentrys_wrath_firework_explosion")))
+            return;
+
+        // attempt to damage every entity with a potion of harming 2
+        for (LivingEntity entity : hitEntities) {
+            //noinspection deprecation - no other choice
+            EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(
+                shooter,
+                entity,
+                EntityDamageEvent.DamageCause.MAGIC,
+                damage
+            );
+            plugin.getServer().getPluginManager().callEvent(damageEvent);
+
+            if (!damageEvent.isCancelled())
+                entity.addPotionEffect(new PotionEffect(PotionEffectType.HARM, 1, HARMING_LEVEL));
+        }
+    }
+
+    @SuppressWarnings("squid:S3011") // we need reflection
+    private void setAttacker(Firework firework) {
         // acquire the firework's UUID
         UUID fireworkUUID = firework.getUniqueId();
 
@@ -95,40 +130,5 @@ public class SentrysWrathListener extends AbstractListener {
 
         // set the shooter to be used by other plugins
         firework.setShooter(owner);
-    }
-
-    @SuppressWarnings("squid:S1874") // no other choice other than the deprecated method
-    @EventHandler(ignoreCancelled = true)
-    public void onFireworkExplosion(FireworkExplodeEvent event) {
-        if (!(event.getEntity().getScoreboardTags().contains("in.sentrys_wrath_firework")))
-            return;
-
-        // gather entities hit by the firework explosion
-        List<LivingEntity> hitEntities = event.getEntity()
-            .getNearbyEntities(EXPLOSION_RANGE, EXPLOSION_RANGE, EXPLOSION_RANGE)
-            .stream()
-            .filter(LivingEntity.class::isInstance)
-            .map(LivingEntity.class::cast)
-            .toList();
-
-        int damage = (HARMING_LEVEL + 1) * 6; // potion of harming
-        Player shooter = (Player) event.getEntity().getShooter();
-        if (shooter == null)
-            return;
-
-        // attempt to damage every entity with a potion of harming 2
-        for (LivingEntity entity : hitEntities) {
-            //noinspection deprecation - no other choice
-            EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(
-                shooter,
-                entity,
-                EntityDamageEvent.DamageCause.MAGIC,
-                damage
-            );
-            plugin.getServer().getPluginManager().callEvent(damageEvent);
-
-            if (!damageEvent.isCancelled())
-                entity.addPotionEffect(new PotionEffect(PotionEffectType.HARM, 1, HARMING_LEVEL));
-        }
     }
 }

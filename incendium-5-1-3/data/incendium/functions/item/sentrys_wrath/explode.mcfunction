@@ -36,7 +36,7 @@ playsound minecraft:block.respawn_anchor.deplete player @a[distance=..40] ~ ~ ~ 
 playsound minecraft:entity.wither.break_block player @a[distance=..40] ~ ~ ~ 1 0.85 0.7
 playsound minecraft:block.respawn_anchor.deplete player @a[distance=..40] ~ ~ ~ 1.0 0.5 0.8
 
-summon minecraft:firework_rocket ~ ~0.1 ~ {Silent:1b,Motion:[0.0,0.0,0.0],ShotAtAngle:1,LifeTime:0,FireworksItem:{id:"firework_rocket",Count:1,tag:{Fireworks:{Flight:1,Explosions:[{Type:1,Flicker:0,Trail:0,Colors:[I;65535]},{Type:1,Flicker:0,Trail:0,Colors:[I;51455]},{Type:1,Flicker:0,Trail:0,Colors:[I;38655]},{Type:1,Flicker:0,Trail:0,Colors:[I;25855]},{Type:1,Flicker:0,Trail:0,Colors:[I;13055]},{Type:1,Flicker:0,Trail:0,Colors:[I;255]}]}}},Tags:["in.sentrys_wrath_firework"]}
+summon minecraft:firework_rocket ~ ~0.1 ~ {Silent:1b,Motion:[0.0,0.0,0.0],ShotAtAngle:1,LifeTime:0,FireworksItem:{id:"firework_rocket",Count:1,tag:{Fireworks:{Flight:1,Explosions:[{Type:1,Flicker:0,Trail:0,Colors:[I;65535]},{Type:1,Flicker:0,Trail:0,Colors:[I;51455]},{Type:1,Flicker:0,Trail:0,Colors:[I;38655]},{Type:1,Flicker:0,Trail:0,Colors:[I;25855]},{Type:1,Flicker:0,Trail:0,Colors:[I;13055]},{Type:1,Flicker:0,Trail:0,Colors:[I;255]}]}}},Tags:["in.sentrys_wrath_firework","in.sentrys_wrath_firework_explosion"]}
 
 execute as @e[type=firework_rocket,tag=in.sentrys_wrath_firework,tag=!in.checked,distance=..20] run function incendium:misc/firework
 

@@ -10,7 +10,7 @@
             {
               "function": "minecraft:set_enchantments",
               "enchantments": {
-                "minecraft:unbreaking": 8,
+                "minecraft:unbreaking": 3,
                 "minecraft:mending": 1
               }
             },

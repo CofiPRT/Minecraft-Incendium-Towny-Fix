@@ -11,7 +11,7 @@
               "function": "minecraft:set_enchantments",
               "enchantments": {
                 "minecraft:mending": 1,
-                "minecraft:piercing": 6
+                "minecraft:piercing": 4
               }
             },
             {

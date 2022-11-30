@@ -8,6 +8,7 @@ import ro.cofi.incendiumtownyfix.listener.MultiplexCrossbowListener;
 import ro.cofi.incendiumtownyfix.listener.RagnarokListener;
 import ro.cofi.incendiumtownyfix.listener.SentrysWrathListener;
 import ro.cofi.incendiumtownyfix.listener.TrailblazerListener;
+import ro.cofi.incendiumtownyfix.listener.VoltaicTridentListener;
 
 import java.util.Arrays;
 import java.util.function.Function;
@@ -30,7 +31,8 @@ public final class IncendiumTownyFix extends JavaPlugin {
             MultiplexCrossbowListener::new,
             FirestormListener::new,
             RagnarokListener::new,
-            TrailblazerListener::new
+            TrailblazerListener::new,
+            VoltaicTridentListener::new
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener.apply(this), this));
     }
 

@@ -6,4 +6,6 @@ execute if predicate incendium:random/50 if entity @s[nbt={Fire:-20s}] run data 
 
 data modify entity @s Owner set from storage incendium:temp player.UUID
 
+data modify entity @s BukkitValues.incendiumtownyfix:shooter set from storage incendium:temp player.UUID
+
 tag @s add in.checked

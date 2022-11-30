@@ -1,9 +1,10 @@
-package ro.cofi.incendiumtownyfix.listener;
+package ro.cofi.incendiumtownyfix.listener.weapon;
 
 import org.bukkit.entity.Firework;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
+import ro.cofi.incendiumtownyfix.listener.AbstractListener;
 import ro.cofi.incendiumtownyfix.logic.Util;
 
 public class VoltaicTridentListener extends AbstractListener {

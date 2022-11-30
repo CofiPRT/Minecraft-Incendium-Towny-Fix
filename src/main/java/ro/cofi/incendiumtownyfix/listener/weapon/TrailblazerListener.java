@@ -1,4 +1,4 @@
-package ro.cofi.incendiumtownyfix.listener;
+package ro.cofi.incendiumtownyfix.listener.weapon;
 
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.LivingEntity;
@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
+import ro.cofi.incendiumtownyfix.listener.AbstractListener;
 import ro.cofi.incendiumtownyfix.logic.Predicates;
 import ro.cofi.incendiumtownyfix.logic.Util;
 
@@ -44,8 +45,11 @@ public class TrailblazerListener extends AbstractListener {
             return;
 
         // get nearby entities and attempt to set them on fire (25% chance)
-        List<LivingEntity> nearbyEntities = Util.getNearbyEntities(firework, BURN_RANGE, Predicates.MOBS_NOT_PLAYER);
-        Util.attemptEntityIgnition(shooter, nearbyEntities, FIRE_PROBABILITY, FIRE_TICKS);
+        List<LivingEntity> nearbyEntities = Util.getNearbyEntities(
+            firework, BURN_RANGE,
+            Predicates.MOBS_NOT_PLAYER, Predicates.random(FIRE_PROBABILITY)
+        );
+        Util.attemptEntityIgnition(shooter, nearbyEntities, FIRE_TICKS);
 
         // kill the firework
         firework.remove();

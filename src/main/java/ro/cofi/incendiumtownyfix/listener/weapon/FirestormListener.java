@@ -1,4 +1,4 @@
-package ro.cofi.incendiumtownyfix.listener;
+package ro.cofi.incendiumtownyfix.listener.weapon;
 
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.LivingEntity;
@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
+import ro.cofi.incendiumtownyfix.listener.AbstractListener;
 import ro.cofi.incendiumtownyfix.logic.Predicates;
 import ro.cofi.incendiumtownyfix.logic.Util;
 
@@ -37,7 +38,10 @@ public class FirestormListener extends AbstractListener {
             return;
 
         // gather entities hit by the firework explosion and attempt to set them on fire (50% chance)
-        List<LivingEntity> hitEntities = Util.getNearbyEntities(firework, EXPLOSION_RANGE, Predicates.MOBS);
-        Util.attemptEntityIgnition(shooter, hitEntities, FIRE_PROBABILITY, FIRE_TICKS);
+        List<LivingEntity> hitEntities = Util.getNearbyEntities(
+            firework, EXPLOSION_RANGE,
+            Predicates.MOBS, Predicates.random(FIRE_PROBABILITY)
+        );
+        Util.attemptEntityIgnition(shooter, hitEntities, FIRE_TICKS);
     }
 }

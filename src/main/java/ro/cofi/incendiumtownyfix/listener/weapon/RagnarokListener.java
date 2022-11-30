@@ -1,4 +1,4 @@
-package ro.cofi.incendiumtownyfix.listener;
+package ro.cofi.incendiumtownyfix.listener.weapon;
 
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
+import ro.cofi.incendiumtownyfix.listener.AbstractListener;
 import ro.cofi.incendiumtownyfix.logic.Util;
 
 public class RagnarokListener extends AbstractListener {

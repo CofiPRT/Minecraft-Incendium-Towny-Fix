@@ -12,4 +12,9 @@ public interface Predicates {
     Predicate<Entity> PLAYER = Player.class::isInstance;
     Predicate<Entity> MOBS_NOT_PLAYER = MOBS.and(PLAYER.negate());
     Predicate<Entity> SANCTUM_GUARDIAN = entity -> entity.getScoreboardTags().contains("in.sanctum_guardian");
+
+    static <T> Predicate<T> random(double probability) {
+        return entity -> Math.random() < probability;
+    }
+
 }

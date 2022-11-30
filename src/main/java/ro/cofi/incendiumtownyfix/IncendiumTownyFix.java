@@ -1,14 +1,16 @@
 package ro.cofi.incendiumtownyfix;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import ro.cofi.incendiumtownyfix.listener.FirestormListener;
-import ro.cofi.incendiumtownyfix.listener.HolyWrathListener;
-import ro.cofi.incendiumtownyfix.listener.MultiplexCrossbowListener;
-import ro.cofi.incendiumtownyfix.listener.RagnarokListener;
-import ro.cofi.incendiumtownyfix.listener.SentrysWrathListener;
-import ro.cofi.incendiumtownyfix.listener.TrailblazerListener;
-import ro.cofi.incendiumtownyfix.listener.VoltaicTridentListener;
+import ro.cofi.incendiumtownyfix.listener.tool.HeftyPickaxeListener;
+import ro.cofi.incendiumtownyfix.listener.weapon.FirestormListener;
+import ro.cofi.incendiumtownyfix.listener.weapon.HolyWrathListener;
+import ro.cofi.incendiumtownyfix.listener.weapon.MultiplexCrossbowListener;
+import ro.cofi.incendiumtownyfix.listener.weapon.RagnarokListener;
+import ro.cofi.incendiumtownyfix.listener.weapon.SentrysWrathListener;
+import ro.cofi.incendiumtownyfix.listener.weapon.TrailblazerListener;
+import ro.cofi.incendiumtownyfix.listener.weapon.VoltaicTridentListener;
 
 import java.util.Arrays;
 import java.util.function.Function;
@@ -26,18 +28,26 @@ public final class IncendiumTownyFix extends JavaPlugin {
     public void onEnable() {
         // register listeners
         Arrays.<Function<IncendiumTownyFix, ? extends Listener>>asList(
+            // weapons
             SentrysWrathListener::new,
             HolyWrathListener::new,
             MultiplexCrossbowListener::new,
             FirestormListener::new,
             RagnarokListener::new,
             TrailblazerListener::new,
-            VoltaicTridentListener::new
+            VoltaicTridentListener::new,
+
+            // tools
+            HeftyPickaxeListener::new
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener.apply(this), this));
     }
 
     public static IncendiumTownyFix getPlugin() {
         return plugin;
+    }
+
+    public static NamespacedKey getNamespacedKey(String key) {
+        return new NamespacedKey(plugin, key);
     }
 
 }

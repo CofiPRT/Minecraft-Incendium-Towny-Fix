@@ -4,11 +4,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -20,72 +23,29 @@ public class Util {
     private Util() { }
 
     /**
-     * Attempts to fix the owner (shooter) of a projectile using reflection.
+     * Attempts to fix the owner (shooter) of a projectile.
      *
      * @return the owner of the projectile if they exist, null otherwise
      */
-    @SuppressWarnings("squid:S3011") // we need reflection
     public static Player getOrFixShooter(Projectile projectile) {
-        Player shooter = (Player) projectile.getShooter();
-        if (shooter != null)
-            return shooter;
+        PersistentDataContainer persistentDataContainer = projectile.getPersistentDataContainer();
+        int[] uuidArray = persistentDataContainer.get(
+            IncendiumTownyFix.getNamespacedKey("shooter"),
+            PersistentDataType.INTEGER_ARRAY
+        );
 
-        // acquire the firework's UUID
-        UUID fireworkUUID = projectile.getUniqueId();
-
-        // recursively traverse the firework's parent classes until a field called "entity" is found
-        // obtain the entity object of this firework
-        Object entityObj = null;
-        Class<?> clazz = projectile.getClass();
-        while (clazz != null) {
-            try {
-                Field field = clazz.getDeclaredField("entity");
-                field.setAccessible(true);
-                entityObj = field.get(projectile);
-                break;
-            } catch (NoSuchFieldException e) {
-                clazz = clazz.getSuperclass();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (entityObj == null)
+        if (uuidArray == null || uuidArray.length != 4)
             return null;
 
-        // recursively traverse the firework entity's parent classes until a UUID field
-        // that's different from the firework's UUID is found
-        UUID ownerUUID = null;
-        Object finalEntityObj = entityObj;
-        clazz = entityObj.getClass();
-        while (clazz != null) {
-            ownerUUID = Stream.of(clazz.getDeclaredFields())
-                .filter(field -> field.getType() == UUID.class)
-                .flatMap(field -> {
-                    try {
-                        field.setAccessible(true);
-                        return Stream.of((UUID) field.get(finalEntityObj));
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                        return Stream.empty();
-                    }
-                })
-                .filter(uuid -> uuid != null && !uuid.equals(fireworkUUID))
-                .findFirst()
-                .orElse(null);
+        // convert the array to a UUID - the array has 4 elements, each representing a 32-bit integer
+        // the UUID constructor takes 2 longs, so we need to convert the array to 2 longs
+        long mostSigBits = ((long) uuidArray[0] << 32) | (uuidArray[1] & 0xFFFFFFFFL);
+        long leastSigBits = ((long) uuidArray[2] << 32) | (uuidArray[3] & 0xFFFFFFFFL);
 
-            if (ownerUUID != null)
-                break;
-
-            clazz = clazz.getSuperclass();
-        }
-
-        // if the owner UUID is null, we can't do anything
-        if (ownerUUID == null)
-            return null;
+        UUID uuid = new UUID(mostSigBits, leastSigBits);
 
         // get the owner's name
-        Player owner = IncendiumTownyFix.getPlugin().getServer().getPlayer(ownerUUID);
+        Player owner = IncendiumTownyFix.getPlugin().getServer().getPlayer(uuid);
 
         // set the shooter to be used by other plugins
         projectile.setShooter(owner);
@@ -103,6 +63,13 @@ public class Util {
             .toList();
     }
 
+    public static void testEventAndApply(Cancellable event, Runnable action) {
+        IncendiumTownyFix.getPlugin().getServer().getPluginManager().callEvent((Event) event);
+
+        if (!event.isCancelled())
+            action.run();
+    }
+
     @SuppressWarnings("squid:S1874") // no other choice other than the deprecated method
     public static void testDamageAndApply(
         Player shooter, List<LivingEntity> entities, double damage, Consumer<LivingEntity> action
@@ -116,23 +83,11 @@ public class Util {
                 damage
             );
 
-            IncendiumTownyFix.getPlugin().getServer().getPluginManager().callEvent(damageEvent);
-            if (damageEvent.isCancelled())
-                continue;
-
-            action.accept(entity);
+            testEventAndApply(damageEvent, () -> action.accept(entity));
         }
     }
 
-    public static void attemptEntityIgnition(
-        Player shooter, List<LivingEntity> entities, double probability, int fireTicks
-    ) {
-        testDamageAndApply(
-            shooter, entities, 1,
-            entity -> {
-                if (Math.random() < probability)
-                    entity.setFireTicks(fireTicks);
-            }
-        );
+    public static void attemptEntityIgnition(Player shooter, List<LivingEntity> entities, int fireTicks) {
+        testDamageAndApply(shooter, entities, 1, entity -> entity.setFireTicks(fireTicks));
     }
 }

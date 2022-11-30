@@ -34,7 +34,7 @@
             },
             {
               "function": "minecraft:set_nbt",
-              "tag": "{CustomModelData:1450500,incendium:{item:'hefty_pickaxe'}}"
+              "tag": "{CustomModelData:1450500,incendium:{item:'hefty_pickaxe'},PublicBukkitValues:{'incendiumtownyfix:item_id':'hefty_pickaxe'}}"
             }
           ]
         }

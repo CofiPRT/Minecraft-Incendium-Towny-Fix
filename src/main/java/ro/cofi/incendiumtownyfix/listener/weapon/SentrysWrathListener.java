@@ -1,4 +1,4 @@
-package ro.cofi.incendiumtownyfix.listener;
+package ro.cofi.incendiumtownyfix.listener.weapon;
 
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.LivingEntity;
@@ -8,6 +8,7 @@ import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
+import ro.cofi.incendiumtownyfix.listener.AbstractListener;
 import ro.cofi.incendiumtownyfix.logic.Predicates;
 import ro.cofi.incendiumtownyfix.logic.Util;
 

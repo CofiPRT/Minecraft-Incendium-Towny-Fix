@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
-import ro.cofi.incendiumtownyfix.ProjectileUtils;
+import ro.cofi.incendiumtownyfix.logic.Util;
 
 public class RagnarokListener extends AbstractListener {
 
@@ -26,13 +26,16 @@ public class RagnarokListener extends AbstractListener {
             return;
 
         // fix this firework's shooter if necessary, so that other plugins may properly identify it
-        ProjectileUtils.getOrFixShooter(firework);
+        Util.getOrFixShooter(firework);
     }
 
     /**
      * Prevents mobs from being set on fire by lightning strikes if they are protected by Towny.
      * <br><br>
-     * A PaperMC bug allows the entity to be set on fire when the lightning strikes are summoned too fast.
+     * Use at least <b>Paper #254 (commit 93b2246)</b> for this to work properly.
+     * <br><br>
+     * Prior to that update, a PaperMC bug allowed the entity to be set on fire when the lightning strikes
+     * were summoned too fast.
      * See <a href="https://github.com/PaperMC/Paper/issues/8523">PaperMC/Paper#8523</a>.
      */
     @EventHandler(priority = EventPriority.LOWEST)

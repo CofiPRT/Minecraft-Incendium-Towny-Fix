@@ -5,16 +5,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.SmallFireball;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.Vector;
 import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
-import ro.cofi.incendiumtownyfix.ProjectileUtils;
+import ro.cofi.incendiumtownyfix.logic.Predicates;
+import ro.cofi.incendiumtownyfix.logic.Util;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 public class HolyWrathListener extends AbstractListener {
 
@@ -34,7 +32,7 @@ public class HolyWrathListener extends AbstractListener {
             return;
 
         // if no shooter could be found or set, we can't do anything
-        Player shooter = ProjectileUtils.getOrFixShooter(firework);
+        Player shooter = Util.getOrFixShooter(firework);
         if (shooter == null)
             return;
 
@@ -51,28 +49,15 @@ public class HolyWrathListener extends AbstractListener {
             return;
 
         // gather entities hit by the firework explosion
-        List<LivingEntity> hitEntities = firework
-            .getNearbyEntities(explosionRange, explosionRange, explosionRange)
-            .stream()
-            .filter(LivingEntity.class::isInstance)
-            .filter(Predicate.not(Player.class::isInstance))
-            .filter(entity -> !entity.getScoreboardTags().contains("in.sanctum_guardian")) // incendium implementation
-            .map(LivingEntity.class::cast)
-            .toList();
+        List<LivingEntity> hitEntities = Util.getNearbyEntities(
+            firework, explosionRange,
+            Predicates.MOBS_NOT_PLAYER, Predicates.SANCTUM_GUARDIAN.negate()
+        );
 
         // attempt to apply motion to every entity
-        for (LivingEntity entity : hitEntities) {
-            // simulate a damage event
-            //noinspection deprecation - no other choice
-            EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(
-                shooter,
-                entity,
-                EntityDamageEvent.DamageCause.MAGIC,
-                1
-            );
-            plugin.getServer().getPluginManager().callEvent(damageEvent);
-
-            if (!damageEvent.isCancelled()) {
+        Util.testDamageAndApply(
+            shooter, hitEntities, 1,
+            entity -> {
                 // apply knockback, from the entity towards the firework - minecraft reverses the direction
                 Vector direction = firework.getLocation().toVector().subtract(
                     entity.getLocation().toVector()
@@ -80,7 +65,7 @@ public class HolyWrathListener extends AbstractListener {
 
                 entity.knockback(KNOCKBACK_FORCE * KNOCKBACK_FORCE, direction.getX(), direction.getZ());
             }
-        }
+        );
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -92,6 +77,6 @@ public class HolyWrathListener extends AbstractListener {
             return;
 
         // fix this fireball's shooter if necessary, so that other plugins may properly identify it
-        ProjectileUtils.getOrFixShooter(fireball);
+        Util.getOrFixShooter(fireball);
     }
 }

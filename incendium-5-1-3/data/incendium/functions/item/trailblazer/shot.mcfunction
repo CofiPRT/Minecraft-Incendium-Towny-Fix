@@ -1,6 +1,8 @@
 # from: player/main
 # @s: player firing trailblazer
 
+function incendium:misc/store_uuid
+
 scoreboard players operation $trailblazer in.dummy = @s in.trailblazer
 
 execute if entity @s[predicate=incendium:holding/trailblazer/mainhand] store result score $power in.dummy run data get entity @s SelectedItem.tag.Enchantments[{id:"minecraft:power"}].lvl 10

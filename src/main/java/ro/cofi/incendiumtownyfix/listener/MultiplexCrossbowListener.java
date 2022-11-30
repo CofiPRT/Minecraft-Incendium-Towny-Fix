@@ -4,7 +4,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
-import ro.cofi.incendiumtownyfix.ProjectileUtils;
+import ro.cofi.incendiumtownyfix.logic.Util;
 
 public class MultiplexCrossbowListener extends AbstractListener {
 
@@ -21,6 +21,6 @@ public class MultiplexCrossbowListener extends AbstractListener {
             return;
 
         // fix this arrow's shooter if necessary, so that other plugins may properly identify it
-        ProjectileUtils.getOrFixShooter(arrow);
+        Util.getOrFixShooter(arrow);
     }
 }

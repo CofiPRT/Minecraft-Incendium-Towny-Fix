@@ -1,15 +1,23 @@
-package ro.cofi.incendiumtownyfix;
+package ro.cofi.incendiumtownyfix.logic;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class ProjectileUtils {
+public class Util {
 
-    private ProjectileUtils() { }
+    private Util() { }
 
     /**
      * Attempts to fix the owner (shooter) of a projectile using reflection.
@@ -83,5 +91,48 @@ public class ProjectileUtils {
         projectile.setShooter(owner);
 
         return owner;
+    }
+
+    @SafeVarargs
+    public static List<LivingEntity> getNearbyEntities(Entity entity, double radius, Predicate<Entity>... filters) {
+        return entity.getNearbyEntities(radius, radius, radius) // within box
+            .stream()
+            .filter(Stream.of(filters).reduce(Predicate::and).orElse(Predicates.TRUE)) // filter
+            .filter(e -> e.getLocation().distanceSquared(entity.getLocation()) <= radius * radius) // within sphere
+            .map(LivingEntity.class::cast)
+            .toList();
+    }
+
+    @SuppressWarnings("squid:S1874") // no other choice other than the deprecated method
+    public static void testDamageAndApply(
+        Player shooter, List<LivingEntity> entities, double damage, Consumer<LivingEntity> action
+    ) {
+        for (LivingEntity entity : entities) {
+            //noinspection deprecation - no other choice
+            EntityDamageByEntityEvent damageEvent = new EntityDamageByEntityEvent(
+                shooter,
+                entity,
+                EntityDamageEvent.DamageCause.MAGIC,
+                damage
+            );
+
+            IncendiumTownyFix.getPlugin().getServer().getPluginManager().callEvent(damageEvent);
+            if (damageEvent.isCancelled())
+                continue;
+
+            action.accept(entity);
+        }
+    }
+
+    public static void attemptEntityIgnition(
+        Player shooter, List<LivingEntity> entities, double probability, int fireTicks
+    ) {
+        testDamageAndApply(
+            shooter, entities, 1,
+            entity -> {
+                if (Math.random() < probability)
+                    entity.setFireTicks(fireTicks);
+            }
+        );
     }
 }

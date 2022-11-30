@@ -19,7 +19,9 @@ execute anchored eyes if block ^ ^ ^ water run function incendium:item/trailblaz
 execute if entity @s[scores={in.trailblazer=80..}] anchored eyes run particle minecraft:small_flame ^ ^ ^0.2 1 1 1 0.2 20 force
 
 # effects
-execute if entity @s[scores={in.trailblazer=80..},predicate=incendium:random/20] anchored eyes positioned ^ ^ ^0.2 as @e[type=#incendium:mobs_no_player,predicate=incendium:random/25,distance=..5] run data modify entity @s Fire set value 80s
+#execute if entity @s[scores={in.trailblazer=80..},predicate=incendium:random/20] anchored eyes positioned ^ ^ ^0.2 as @e[type=#incendium:mobs_no_player,predicate=incendium:random/25,distance=..5] run data modify entity @s Fire set value 80s
+
+execute if entity @s[scores={in.trailblazer=80..},predicate=incendium:random/20] run function incendium:item/trailblazer/using_burn
 
 execute if score $update in.dummy matches 0 if entity @s[scores={in.trailblazer=..80}] run function incendium:item/trailblazer/update
 

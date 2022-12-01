@@ -3,6 +3,7 @@ package ro.cofi.incendiumtownyfix;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import ro.cofi.incendiumtownyfix.listener.armor.RadiationShieldListener;
 import ro.cofi.incendiumtownyfix.listener.tool.HeftyPickaxeListener;
 import ro.cofi.incendiumtownyfix.listener.tool.RestlessNatureListener;
 import ro.cofi.incendiumtownyfix.listener.weapon.FirestormListener;
@@ -40,7 +41,10 @@ public final class IncendiumTownyFix extends JavaPlugin {
 
             // tools
             HeftyPickaxeListener::new,
-            RestlessNatureListener::new
+            RestlessNatureListener::new,
+
+            // armor
+            RadiationShieldListener::new
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener.apply(this), this));
     }
 

@@ -8,6 +8,7 @@ data modify entity @s Motion set from storage incendium:temp aim.vector
 
 data modify entity @s Item.tag.player.UUID set from storage incendium:temp player.UUID
 data modify entity @s Owner set from storage incendium:temp player.UUID
+data modify entity @s BukkitValues.incendiumtownyfix:shooter set from storage incendium:temp player.UUID
 
 tag @s add in.ticking_entity
 tag @s add in.air_toggle

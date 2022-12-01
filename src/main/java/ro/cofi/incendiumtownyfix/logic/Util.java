@@ -28,9 +28,26 @@ public class Util {
      * @return the owner of the projectile if they exist, null otherwise
      */
     public static Player getOrFixShooter(Projectile projectile) {
-        PersistentDataContainer persistentDataContainer = projectile.getPersistentDataContainer();
+        // get the owner's name
+        Player owner = getOwner(projectile);
+        if (owner == null)
+            return null;
+
+        // set the shooter to be used by other plugins
+        projectile.setShooter(owner);
+
+        return owner;
+    }
+
+    /**
+     * Attempts to retrieve the owner of an entity, stored in a persistent data container.
+     *
+     * @return the owner of the entity if they exist, null otherwise
+     */
+    public static Player getOwner(Entity entity) {
+        PersistentDataContainer persistentDataContainer = entity.getPersistentDataContainer();
         int[] uuidArray = persistentDataContainer.get(
-            IncendiumTownyFix.getNamespacedKey("shooter"),
+            IncendiumTownyFix.getNamespacedKey("owner"),
             PersistentDataType.INTEGER_ARRAY
         );
 
@@ -45,12 +62,7 @@ public class Util {
         UUID uuid = new UUID(mostSigBits, leastSigBits);
 
         // get the owner's name
-        Player owner = IncendiumTownyFix.getPlugin().getServer().getPlayer(uuid);
-
-        // set the shooter to be used by other plugins
-        projectile.setShooter(owner);
-
-        return owner;
+        return IncendiumTownyFix.getPlugin().getServer().getPlayer(uuid);
     }
 
     @SafeVarargs

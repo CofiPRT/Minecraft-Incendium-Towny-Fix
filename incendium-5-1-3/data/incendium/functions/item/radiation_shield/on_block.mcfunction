@@ -7,6 +7,7 @@ scoreboard players set @s in.cd_prism 120
 scoreboard players set @s in.cd_shield 120
 
 data modify entity @e[type=area_effect_cloud,distance=..4,limit=1,tag=in.radiation,tag=!in.checked] Owner set from entity @p[tag=in.valid_player] UUID
+data modify entity @e[type=area_effect_cloud,distance=..4,limit=1,tag=in.radiation,tag=!in.checked] BukkitValues.incendiumtownyfix:owner set from entity @p[tag=in.valid_player] UUID
 
 # audiovisuals
 playsound minecraft:entity.evoker.cast_spell player @a[distance=..16] ~ ~ ~ 1 0.75 0.5

@@ -1,5 +1,6 @@
 package ro.cofi.incendiumtownyfix.logic;
 
+import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import ro.cofi.incendiumtownyfix.IncendiumTownyFix;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -73,6 +75,22 @@ public class Util {
             .filter(e -> e.getLocation().distanceSquared(entity.getLocation()) <= radius * radius) // within sphere
             .map(LivingEntity.class::cast)
             .toList();
+    }
+
+    public static void fixAreaOfEffectOwner(AreaEffectCloud cloud, List<LivingEntity> affectedEntities) {
+        // retrieve the cloud's owner, as set by the datapack
+        Player player = Util.getOwner(cloud);
+        if (player == null)
+            return;
+
+        // only apply to damageable entities
+        List<LivingEntity> damageableEntities = new ArrayList<>();
+
+        Util.testDamageAndApply(player, affectedEntities, 1, damageableEntities::add);
+
+        // remove all non-damageable entities from the list
+        affectedEntities.clear();
+        affectedEntities.addAll(damageableEntities);
     }
 
     public static boolean testEventAndApply(Cancellable event, Runnable action) {

@@ -3,6 +3,7 @@ package ro.cofi.incendiumtownyfix;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import ro.cofi.incendiumtownyfix.listener.armor.NecroticShieldListener;
 import ro.cofi.incendiumtownyfix.listener.armor.PrismaticShieldListener;
 import ro.cofi.incendiumtownyfix.listener.armor.RadiationShieldListener;
 import ro.cofi.incendiumtownyfix.listener.tool.HeftyPickaxeListener;
@@ -46,7 +47,8 @@ public final class IncendiumTownyFix extends JavaPlugin {
 
             // armor
             RadiationShieldListener::new,
-            PrismaticShieldListener::new
+            PrismaticShieldListener::new,
+            NecroticShieldListener::new
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener.apply(this), this));
     }
 

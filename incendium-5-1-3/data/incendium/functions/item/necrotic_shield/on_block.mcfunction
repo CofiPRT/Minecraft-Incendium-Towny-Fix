@@ -12,8 +12,10 @@ scoreboard players set @s in.cd_shield 60
 # We exclude in.checked here since these entities will automatically get this tag in the next tick
 #  This means repeated shield blocking won't constantly tick the same entities again!
 data modify entity @e[type=area_effect_cloud,distance=..4,limit=1,tag=in.necrotic_wither,tag=!in.checked] Owner set from entity @p UUID
+data modify entity @e[type=area_effect_cloud,distance=..4,limit=1,tag=in.necrotic_wither,tag=!in.checked] BukkitValues.incendiumtownyfix:owner set from entity @p UUID
 
 execute as @e[type=evoker_fangs,distance=..8,limit=8,tag=in.necrotic_fangs,tag=!in.checked] run data modify entity @s Owner set from entity @p UUID
+execute as @e[type=evoker_fangs,distance=..8,limit=8,tag=in.necrotic_fangs,tag=!in.checked] run data modify entity @s BukkitValues.incendiumtownyfix:owner set from entity @p UUID
 
 # audiovisuals
 playsound minecraft:entity.wither.break_block player @a[distance=..16] ~ ~ ~ 1 0.5 0.25

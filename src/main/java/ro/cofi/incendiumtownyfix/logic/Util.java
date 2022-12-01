@@ -63,11 +63,14 @@ public class Util {
             .toList();
     }
 
-    public static void testEventAndApply(Cancellable event, Runnable action) {
+    public static boolean testEventAndApply(Cancellable event, Runnable action) {
         IncendiumTownyFix.getPlugin().getServer().getPluginManager().callEvent((Event) event);
 
-        if (!event.isCancelled())
-            action.run();
+        if (event.isCancelled())
+            return false;
+
+        action.run();
+        return true;
     }
 
     @SuppressWarnings("squid:S1874") // no other choice other than the deprecated method

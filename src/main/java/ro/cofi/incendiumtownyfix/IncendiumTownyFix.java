@@ -4,6 +4,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import ro.cofi.incendiumtownyfix.listener.tool.HeftyPickaxeListener;
+import ro.cofi.incendiumtownyfix.listener.tool.RestlessNatureListener;
 import ro.cofi.incendiumtownyfix.listener.weapon.FirestormListener;
 import ro.cofi.incendiumtownyfix.listener.weapon.HolyWrathListener;
 import ro.cofi.incendiumtownyfix.listener.weapon.MultiplexCrossbowListener;
@@ -38,7 +39,8 @@ public final class IncendiumTownyFix extends JavaPlugin {
             VoltaicTridentListener::new,
 
             // tools
-            HeftyPickaxeListener::new
+            HeftyPickaxeListener::new,
+            RestlessNatureListener::new
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener.apply(this), this));
     }
 
